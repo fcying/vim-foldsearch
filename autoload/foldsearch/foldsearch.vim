@@ -265,7 +265,7 @@ function! foldsearch#foldsearch#FoldSearchDo()
     if (exists("w:foldsearch_highlight_id"))
       call matchdelete(w:foldsearch_highlight_id)
     endif
-    let w:foldsearch_highlight_id = matchadd("Search", w:foldsearch_pattern)
+    let w:foldsearch_highlight_id = matchadd("Search", '\v' . w:foldsearch_pattern)
   endif
 
   " save cursor position
@@ -279,7 +279,7 @@ function! foldsearch#foldsearch#FoldSearchDo()
   let line_fold_start =  0   " set marker for beginning of fold
 
   " do the search
-  while search(w:foldsearch_pattern, flags) > 0
+  while search('\v' . w:foldsearch_pattern, flags) > 0
     " patern had been found
     let pattern_found = 1
 
@@ -296,7 +296,7 @@ function! foldsearch#foldsearch#FoldSearchDo()
     endif
 
     " jump to the end of this match. needed for multiline searches
-    call search(w:foldsearch_pattern, flags . "ce")
+    call search('\v' . w:foldsearch_pattern, flags . "ce")
 
     " update marker
     let line_fold_start = line(".") + 1 + w:foldsearch_context_post
